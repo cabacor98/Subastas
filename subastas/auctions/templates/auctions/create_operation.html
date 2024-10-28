@@ -1,0 +1,56 @@
+{% extends 'auctions/base.html' %} 
+{% block title %} Crear Nueva Operación {% endblock %} 
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Crear Nueva Operación</h2>
+    <form id="createOperationForm">
+        <div class="form-group">
+            <label for="amount_required">Monto requerido</label>
+            <input type="number" class="form-control" id="amount_required" name="amount_required" required>
+        </div>
+        <div class="form-group">
+            <label for="annual_interest">Interés anual (%)</label>
+            <input type="number" class="form-control" id="annual_interest" name="annual_interest" required>
+        </div>
+        <div class="form-group">
+            <label for="deadline">Fecha límite</label>
+            <input type="date" class="form-control" id="deadline" name="deadline" required>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Crear Operación</button>
+    </form>
+    <div id="error-message" class="mt-3 text-danger"></div>
+</div>
+<script>
+    document.getElementById('createOperationForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const amount_required = document.getElementById('amount_required').value;
+        const annual_interest = document.getElementById('annual_interest').value;
+        const deadline = document.getElementById('deadline').value;
+
+        try {
+            const response = await fetch("{% url 'operation-list-create' %}", { // Asegúrate de que la URL esté correcta
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'Authorization': `Token ${token}`, // Elimina esta línea
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ amount_required, annual_interest, deadline })
+            });
+
+            if (response.ok) {
+                alert("Operación creada exitosamente.");
+                window.location.href = "{% url 'operation-list' %}";
+            } else {
+                const errors = await response.json();
+                document.getElementById('error-message').textContent = "Error al crear la operación: " + JSON.stringify(errors);
+            }
+        } catch (error) {
+            document.getElementById('error-message').textContent = "Error de red: " + error;
+        }
+    });
+</script>
+{% endblock %}

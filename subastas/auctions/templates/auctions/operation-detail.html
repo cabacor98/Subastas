@@ -1,0 +1,27 @@
+{% extends 'auctions/base.html' %} {% block title %} Detalles de la Operación {% endblock %} {% block content %} <div
+    class="container mt-5">
+    <h2 class="mb-4">Detalles de la Operación</h2>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Operación ID: {{ operation.id }}</h5>
+            <p class="card-text"><strong>Operador:</strong> {{ operation.operator.username }}</p>
+            <p class="card-text"><strong>Monto Requerido:</strong> {{ operation.amount_required }} $</p>
+            <p class="card-text"><strong>Interés Anual:</strong> {{ operation.annual_interest }} %</p>
+            <p class="card-text"><strong>Fecha Límite:</strong> {{ operation.deadline|date:"Y-m-d H:i" }}</p>
+            <p class="card-text"><strong>Estado:</strong> {% if operation.is_closed %} Cerrada {% else %} Abierta {%
+                endif %}</p>
+            <h5 class="mt-4">Pujas</h5>
+            <ul> {% for bid in operation.bids.all %} <li>
+                    <strong>Inversor:</strong> {{ bid.investor.username }} - <strong>Monto de la Puja:</strong> {{
+                    bid.bid_amount }} $ - <strong>Interés:</strong> {{ bid.interest_rate }} % - <strong>Fecha de
+                        Creación:</strong> {{ bid.created_at|date:"Y-m-d H:i" }}
+                </li> {% empty %} <li>No hay pujas para esta operación.</li> {% endfor %} </ul>
+            <div class="mt-4">
+                <a href="{% url 'operation-list' %}" class="btn btn-secondary">Volver a la Lista</a>
+                <form action="{% url 'operation-delete' operation.id %}" method="POST" style="display:inline;"> {%
+                    csrf_token %} <button type="submit" class="btn btn-danger">Eliminar Operación</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> {% endblock %}

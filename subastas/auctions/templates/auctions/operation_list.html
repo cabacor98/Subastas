@@ -1,0 +1,30 @@
+{% extends 'auctions/base.html' %} 
+{% block title %}Operaciones {% endblock %} 
+{% block content %} 
+<h2>Operaciones Activas</h2>
+    
+    <a href="{% url 'operation-list-create' %}" class="btn btn-primary">Crear
+        operación</a> 
+    {% if operations %} 
+        <div class="list-group"> 
+            {% for operation in operations %} <a
+            href="{% url 'operation-detail' operation.id %}" class="list-group-item list-group-item-action">
+            <h5>Operación: {{ operation.id }}</h5>
+            <p>Monto requerido: {{ operation.amount_required }}</p>
+            <p>Interés anual: {{ operation.annual_interest }}%</p>
+            <p>Fecha límite: {{ operation.deadline|date:"d/m/Y" }}</p> </a> 
+            {% endfor %} 
+        </div> 
+        {% else %} 
+        <p>No hay operaciones activas en este momento.</p> 
+        {% endif %} 
+
+    <script>
+        const user = {
+            username: "{{ user.username }}",
+            email: "{{ user.email }}",
+            role: "{{ user.userprofile.role }}",  // Asegúrate de que este atributo existe
+        };
+        console.log("Usuario:", user);
+    </script>
+{% endblock %}

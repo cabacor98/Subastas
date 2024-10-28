@@ -1,0 +1,7 @@
+<!-- auctions/templates/auctions/bid_list.html --> {% extends 'auctions/base.html' %} {% block title %}Pujas{% endblock
+%} {% block content %} <h2>Pujas para la Operación {{ operation.id }}</h2>
+<div class="list-group"> {% for bid in bids %} <div class="list-group-item">
+        <h5>Inversor: {{ bid.investor.username }}</h5>
+        <p>Monto de la puja: {{ bid.bid_amount }}</p>
+        <p>Tasa de interés: {{ bid.interest_rate }}%</p>
+    </div> {% endfor %} </div> {% endblock %}

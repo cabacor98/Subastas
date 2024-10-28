@@ -1,0 +1,5 @@
+{% extends 'auctions/base.html' %} {% block title %}Inicio{% endblock %}
+{% block content %} <h1>Bienvenido a Subastas de Operaciones Financieras</h1>
+<p>Inicia sesión o registra una cuenta para participar en nuestras subastas.</p>
+<a href="{% url 'login_page' %}" class="btn btn-primary">Iniciar Sesión</a>
+<a href="{% url 'register' %}" class="btn btn-secondary">Registrarse</a> {% endblock %}
